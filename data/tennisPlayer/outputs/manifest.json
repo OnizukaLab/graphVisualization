@@ -1,0 +1,11 @@
+{
+  "dataset": "tennisPlayer",
+  "top_page": "List of male singles tennis players",
+  "final_node_count": 676,
+  "cached_source_count": 676,
+  "outputs": [
+    "nodes.csv",
+    "edges.csv",
+    "manifest.json"
+  ]
+}

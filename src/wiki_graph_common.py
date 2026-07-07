@@ -17,7 +17,7 @@ import requests
 from requests import exceptions as requests_exceptions
 
 
-API_URL = "https://ja.wikipedia.org/w/api.php"
+DEFAULT_API_URL = "https://ja.wikipedia.org/w/api.php"
 WIKILINK_PATTERN = re.compile(r"\[\[([^\[\]]+)\]\]")
 
 
@@ -30,11 +30,19 @@ def now_ts() -> float:
 
 
 class WikipediaClient:
-    def __init__(self, cache_dir: Path, user_agent: str, pause: float = 0.5, max_retries: int = 6) -> None:
+    def __init__(
+        self,
+        cache_dir: Path,
+        user_agent: str,
+        pause: float = 0.5,
+        max_retries: int = 6,
+        api_url: str = DEFAULT_API_URL,
+    ) -> None:
         self.cache_dir = cache_dir
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         self.pause = pause
         self.max_retries = max_retries
+        self.api_url = api_url
         self.session = requests.Session()
         self.session.headers.update({"User-Agent": user_agent})
 
@@ -44,7 +52,7 @@ class WikipediaClient:
             payload = dict(params)
             payload["maxlag"] = 5
             try:
-                response = self.session.post(API_URL, data=payload, timeout=60)
+                response = self.session.post(self.api_url, data=payload, timeout=60)
             except (requests_exceptions.ConnectionError, requests_exceptions.Timeout):
                 time.sleep((attempt + 1) * 5.0)
                 continue
@@ -344,6 +352,56 @@ def build_politician_nodes(
     ordered = sorted(dict.fromkeys(members))
     cache_path.write_text(json.dumps(ordered, ensure_ascii=False, indent=2), encoding="utf-8")
     log(f"[dataset/end] dataset=politician nodes={len(ordered)} elapsed_sec={time.time() - started:.1f}")
+    return ordered
+
+
+def build_list_section_nodes(
+    client: WikipediaClient,
+    dataset_name: str,
+    list_page_title: str,
+    list_section_marker: str,
+    excluded_titles: Set[str],
+    category_keywords: Sequence[str],
+    cache_path: Path,
+    excluded_suffixes: Sequence[str] = (),
+) -> List[str]:
+    if cache_path.exists():
+        return json.loads(cache_path.read_text(encoding="utf-8"))
+
+    started = now_ts()
+    section_heading = list_section_marker.replace("=", "").strip()
+    lowered_keywords = tuple(keyword.lower() for keyword in category_keywords)
+
+    log(f"[dataset/start] dataset={dataset_name} top_page={list_page_title}")
+    links = client.fetch_section_links(list_page_title, section_heading)
+    candidates = [
+        title
+        for title in links
+        if title not in excluded_titles and not any(title.endswith(suffix) for suffix in excluded_suffixes)
+    ]
+    candidates = sorted(dict.fromkeys(candidates))
+    log(f"[dataset/candidates] dataset={dataset_name} candidates={len(candidates)}")
+
+    members: List[str] = []
+    for batch_index, batch in enumerate(batched(candidates, 20), start=1):
+        batch_started = now_ts()
+        log(
+            f"[variant/start] dataset={dataset_name} variant=category_filter "
+            f"batch_index={batch_index} batch_size={len(batch)}"
+        )
+        categories_by_title = client.fetch_page_categories(batch)
+        for title, categories in categories_by_title.items():
+            normalized_categories = [category.lower() for category in categories]
+            if any(keyword in category for keyword in lowered_keywords for category in normalized_categories):
+                members.append(title)
+        log(
+            f"[variant/end] dataset={dataset_name} variant=category_filter batch_index={batch_index} "
+            f"accepted_so_far={len(members)} elapsed_sec={time.time() - batch_started:.1f}"
+        )
+
+    ordered = sorted(dict.fromkeys(members))
+    cache_path.write_text(json.dumps(ordered, ensure_ascii=False, indent=2), encoding="utf-8")
+    log(f"[dataset/end] dataset={dataset_name} nodes={len(ordered)} elapsed_sec={time.time() - started:.1f}")
     return ordered
 
 
