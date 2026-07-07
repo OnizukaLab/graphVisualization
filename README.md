@@ -27,10 +27,14 @@ Each dataset mainly produces the following files:
 - `edges.csv`
 - `manifest.json`
 
+## Example Figure
+
+![Tennis player graph](data/tennisPlayer/outputs/tennisPlayer.svg)
+
 ## PDFs
 
-- [Actor graph PDF](data/actor/actor.pdf)
-- [Politician graph PDF](data/politician/politician.pdf)
+- [Actor graph PDF](data/actor/outputs/actor.pdf)
+- [Politician graph PDF](data/politician/outputs/politician.pdf)
 - [Tennis player graph PDF](data/tennisPlayer/outputs/tennisPlayer.pdf)
 
 ## Notes
