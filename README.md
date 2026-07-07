@@ -7,9 +7,9 @@ This project builds and visualizes social graphs from Wikipedia pages.
 - `src/`
   - Shared scripts for crawling and building actor, politician, and tennis player graphs
 - `data/actor/`
-  - Output data for the actor graph
+  - Output data and visualization artifacts for the actor graph
 - `data/politician/`
-  - Output data for the politician graph
+  - Output data and visualization artifacts for the politician graph
 - `data/tennisPlayer/`
   - Output data and visualization artifacts for the tennis player graph
 
