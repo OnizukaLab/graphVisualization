@@ -1,0 +1,24 @@
+Collected member pages: 230
+[links] 20/230
+[links] 40/230
+[links] 60/230
+[links] 80/230
+[checkpoint] cached_sources=100
+[links] 100/230
+[links] 120/230
+[links] 140/230
+[links] 160/230
+[links] 180/230
+[checkpoint] cached_sources=200
+[links] 200/230
+[links] 220/230
+[checkpoint] cached_sources=230
+[links] 230/230
+{
+  "top_page": "衆議院議員一覧",
+  "member_count": 230,
+  "outputs": [
+    "outputs/nodes.csv",
+    "outputs/edges.csv"
+  ]
+}

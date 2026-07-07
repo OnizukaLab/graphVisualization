@@ -1,0 +1,8 @@
+{
+  "target_size": 2000,
+  "final_actor_count": 2000,
+  "outputs": [
+    "outputs/large_graph/edges.csv",
+    "outputs/large_graph/nodes.csv"
+  ]
+}

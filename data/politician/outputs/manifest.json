@@ -1,0 +1,11 @@
+{
+  "dataset": "politician",
+  "top_page": "衆議院議員一覧",
+  "final_node_count": 465,
+  "cached_source_count": 518,
+  "outputs": [
+    "nodes.csv",
+    "edges.csv",
+    "manifest.json"
+  ]
+}
