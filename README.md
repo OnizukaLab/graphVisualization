@@ -31,7 +31,7 @@ Each dataset mainly produces the following files:
 
 - [Actor graph PDF](data/actor/actor.pdf)
 - [Politician graph PDF](data/politician/politician.pdf)
-- [Tennis player graph PDF](data/tennisPlayer/tennisPlayer.pdf)
+- [Tennis player graph PDF](data/tennisPlayer/outputs/tennisPlayer.pdf)
 
 ## Notes
 
