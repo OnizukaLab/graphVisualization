@@ -1,6 +1,6 @@
 # graphVisualization
 
-This subproject builds social graphs from Wikipedia pages.
+This project builds and visualizes social graphs from Wikipedia pages.
 
 ## Structure
 
