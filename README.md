@@ -2,6 +2,10 @@
 
 This project builds and visualizes social graphs from Wikipedia pages.
 
+## Visualization
+
+The graph visualizations use PageRank scores to determine node size and modularity-based clustering to determine node color.
+
 ## Structure
 
 - `src/`
@@ -13,12 +17,6 @@ This project builds and visualizes social graphs from Wikipedia pages.
 - `data/tennisPlayer/`
   - Output data and visualization artifacts for the tennis player graph
 
-## Entry Points
-
-- `src/build_actor_graph.py`
-- `src/build_politician_graph.py`
-- `src/build_tennis_player_graph.py`
-
 ## Outputs
 
 Each dataset mainly produces the following files:
@@ -27,7 +25,7 @@ Each dataset mainly produces the following files:
 - `edges.csv`
 - `manifest.json`
 
-## Example Figure
+## Example: Tennis player graph visualization
 
 ![Tennis player graph](data/tennisPlayer/outputs/tennisPlayer.svg)
 
